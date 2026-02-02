@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "first_run_completed": false,
+  "language": "ar_SA",
+  "ui_mode": "beginner",
+  "theme": "dark",
+  "accent_color": "blue",
+  "ui_scale": 100,
+  "show_tooltips": true,
+  "enable_animations": true,
+  "auto_save": true,
+  "auto_save_interval": 120,
+  "gpu_acceleration": true,
+  "use_proxy": true,
+  "proxy_resolution": "1080p",
+  "ram_cache_size": 4096,
+  "disk_cache_size": 51200,
+  "ai_enabled": true,
+  "ai_inference_device": "auto",
+  "secure_mode": false,
+  "strip_metadata_on_export": true,
+  "delete_temp_ai_data_on_close": true
+}

@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knoux Art Studio — السيادة الرقمية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --knoux-bg-dark: #07070B;
+            --knoux-surface-1: #0F0F14;
+            --knoux-surface-2: #16161D;
+            --knoux-purple: #9B59FF;
+            --knoux-neon: rgba(155, 89, 255, 0.25);
+            --knoux-text: #F8F8F8;
+            --knoux-muted: #8E8E93;
+            --knoux-border: rgba(255, 255, 255, 0.06);
+        }
+        body {
+            background-color: var(--knoux-bg-dark);
+            color: var(--knoux-text);
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+        }
+        .glass {
+            background: rgba(15, 15, 20, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--knoux-border);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px var(--knoux-neon);
+        }
+        .neon-border:hover {
+            border-color: var(--knoux-purple);
+            box-shadow: 0 0 15px var(--knoux-neon);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--knoux-surface-2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--knoux-purple);
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, var(--knoux-surface-1) 25%, var(--knoux-surface-2) 50%, var(--knoux-surface-1) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "@google/genai": "https://esm.sh/@google/genai@0.2.1"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>

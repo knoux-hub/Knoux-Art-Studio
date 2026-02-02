@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0",
+  "storage_root": "F:\\KnouxArtStudio\\ai_models",
+  "models": [
+    {
+      "id": "portrait_g2",
+      "name": "Knoux Portrait Core",
+      "version": "2.1.0",
+      "type": "ENHANCE",
+      "local_path": "enhancement\\portrait_v2.onnx",
+      "precision": "fp16"
+    },
+    {
+      "id": "body_sculpt_v1",
+      "name": "Neural Body Sculptor",
+      "type": "GEOMETRY",
+      "local_path": "segmentation\\body_mesh.tflite"
+    }
+  ]
+}

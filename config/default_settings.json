@@ -1,0 +1,8 @@
+{
+  "drive_mount": "F:",
+  "project_dir": "F:\\KnouxArtStudio\\projects",
+  "cache_dir": "F:\\KnouxArtStudio\\cache",
+  "gpu_acceleration": true,
+  "sovereignty_mode": "strict",
+  "encryption": "AES-256-GCM"
+}

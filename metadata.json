@@ -1,0 +1,9 @@
+{
+  "name": "Knoux Art Studio",
+  "description": "A supreme privacy-first creative studio for professional photo and video editing, powered by local AI intelligence and digital sovereignty principles.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
