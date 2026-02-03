@@ -1,8 +1,25 @@
-import { MediaAsset, AdjustmentState } from "../types";
+import { MediaAsset } from "../types";
+
+const getPathSeparator = (): string => {
+  const isWindows = typeof navigator !== "undefined" && /Windows/i.test(navigator.userAgent);
+  return isWindows ? "\\" : "/";
+};
+
+const joinPath = (...parts: string[]): string => {
+  const separator = getPathSeparator();
+  const sanitized = parts.map((part) => part.replace(/[\\/]+$/g, ""));
+  return sanitized.join(separator);
+};
+
+export const buildMediaPath = (projectRoot: string, fileName: string): string =>
+  joinPath(projectRoot, "projects", "media", fileName);
 
 export class KnouxEngine {
   private static instance: KnouxEngine;
-  private projectRoot: string = "F:\\KnouxArtStudio";
+  private projectRoot: string =
+    typeof navigator !== "undefined" && /Windows/i.test(navigator.userAgent)
+      ? "F:\\KnouxArtStudio"
+      : "/mnt/knoux/KnouxArtStudio";
 
   private constructor() {}
 
@@ -18,8 +35,7 @@ export class KnouxEngine {
       reader.onload = (e) => {
         resolve({
           id: Math.random().toString(36).substr(2, 9),
-          // Fixed broken string syntax that was being parsed as invalid shorthand properties
-          path: "\\projects\\media\\",
+          path: buildMediaPath(this.projectRoot, file.name),
           name: file.name,
           thumbnail: e.target?.result as string,
           metadata: {

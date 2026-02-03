@@ -2,7 +2,11 @@
 # Knoux Art Studio - Project Creation Script
 # Architecture & Execution Order Supreme
 
-$RootPath = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$RootPath = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+
+try {
 $Structure = @(
     "",
     "components",
@@ -23,5 +27,10 @@ foreach ($Dir in $Structure) {
     }
 }
 
-Write-Host "`n📁 Project structure verified on F:\KnouxArtStudio" -ForegroundColor Cyan
+Write-Host "`n📁 Project structure verified on $RootPath" -ForegroundColor Cyan
 Write-Host "✅ Knoux Art Studio is ready for deployment." -ForegroundColor White
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

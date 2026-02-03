@@ -2,7 +2,11 @@
 # KNOUX ART STUDIO - AI INTELLIGENCE POPULATOR
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+
+try {
 
 function New-SovereignFile($RelativePath, $Content) {
     $FullPath = Join-Path $Root $RelativePath
@@ -35,7 +39,12 @@ New-SovereignFile "ai_models/model_manifest.json" @'
 '@
 
 # 3. Setup Script Finalizer
-New-SovereignFile "setup_complete.txt" "KNOUX ART STUDIO SOVEREIGNTY INITIALIZED SUCCESSFULLY ON F:\ DRIVE"
+New-SovereignFile "setup_complete.txt" "KNOUX ART STUDIO SOVEREIGNTY INITIALIZED SUCCESSFULLY."
 
 Write-Host "`n✅ AI Intelligence Layer Populated." -ForegroundColor Green
 Write-Host "`n🚀 DEPLOYMENT A-TO-Z FINISHED. YOU MAY NOW BUILD THE PROJECT." -ForegroundColor Cyan
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

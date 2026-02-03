@@ -5,9 +5,10 @@
 # "Safety is not a luxury, it's a life"
 # ==============================================================================
 
-$ProjectName = "KnouxArtStudio"
-$Drive = "F:\"
-$RootPath = Join-Path $Drive $ProjectName
+. "$PSScriptRoot/knoux_helpers.ps1"
+$RootPath = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+try {
 
 # 1. Initialization
 Write-Host "`n🏛️ Initializing Knoux Art Studio Sovereignty Order..." -ForegroundColor Cyan
@@ -76,3 +77,8 @@ Write-Host "📍 Project Root: $RootPath" -ForegroundColor Cyan
 Write-Host "🔒 Sovereign Protocol: Hidden Marker Active" -ForegroundColor Gray
 Write-Host "`n[ Knoux Art Studio is ready for high-fidelity module development. ]" -ForegroundColor Yellow
 Write-Host "==============================================================================" -ForegroundColor Gray
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

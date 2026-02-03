@@ -2,9 +2,12 @@
 # KNOUX ART STUDIO - SOVEREIGN FINALIZER
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
 
-Write-Host "🕵️ Verifying Sovereign Installation on Drive F:..." -ForegroundColor Cyan
+try {
+Write-Host "🕵️ Verifying Sovereign Installation on $Root..." -ForegroundColor Cyan
 
 $RequiredDirs = @("src", "ai_models", "config", "projects", "cache")
 foreach ($d in $RequiredDirs) {
@@ -18,3 +21,8 @@ foreach ($d in $RequiredDirs) {
 Write-Host "`n🚀 DEPLOYMENT COMPLETED." -ForegroundColor Green
 Write-Host "You can now open the project in VS Code or your preferred C++ IDE." -ForegroundColor White
 Write-Host "Sovereignty Status: SECURE" -ForegroundColor Magenta
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

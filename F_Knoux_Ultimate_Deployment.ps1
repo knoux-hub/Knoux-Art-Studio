@@ -6,8 +6,10 @@
 # GitHub: https://github.com/knoux-hub/Knoux-Art-Studio.git
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
-$ErrorActionPreference = "Stop"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+try {
 
 function Write-Knoux($msg, $color="Cyan") {
     Write-Host "[KNOUX SOVEREIGN] $msg" -ForegroundColor $color
@@ -183,6 +185,11 @@ echo Done. Safety is not a luxury, it's a life.
 pause
 '@
 
-Write-Knoux "`n🚀 DEPLOYMENT COMPLETED A-TO-Z ON F:\KnouxArtStudio" "Green"
+Write-Knoux "`n🚀 DEPLOYMENT COMPLETED A-TO-Z ON $Root" "Green"
 Write-Knoux "You can now run Run-Build.bat to compile the Studio." "White"
 Write-Knoux "Safety is not a luxury, it's a life." "Magenta"
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

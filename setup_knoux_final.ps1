@@ -4,9 +4,12 @@
 # Architecture & Execution Order: F:\ DRIVE ALPHA
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
 $SovereignMarker = Join-Path $Root ".knoux_sovereign"
 
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+try {
 Write-Host "🏛️ Initializing Knoux Art Studio: Supreme Order..." -ForegroundColor Cyan
 
 # 1. Create Directory Hierarchy
@@ -51,7 +54,12 @@ export class KnouxEngine {
 New-Item -Path $SovereignMarker -ItemType File -Force | Out-Null
 Set-ItemProperty -Path $SovereignMarker -Name Attributes -Value Hidden
 
-Write-Host "`n✅ KNOUX ART STUDIO IS DEPLOYED ON F:\" -ForegroundColor Yellow
+Write-Host "`n✅ KNOUX ART STUDIO IS DEPLOYED." -ForegroundColor Yellow
 Write-Host "📍 Project Root: $Root" -ForegroundColor White
 Write-Host "🛡️ Sovereignty Protocol: ACTIVE" -ForegroundColor White
 Write-Host "==============================================================================" -ForegroundColor Gray
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

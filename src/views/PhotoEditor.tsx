@@ -1,20 +1,58 @@
-import React, { useState, useRef } from 'react';
-import { AppScreen, UserMode, AdjustmentState, Layer, MediaAsset } from '../types';
+import React, { useRef, useState } from 'react';
+import { AdjustmentState, AppScreen, MediaAsset, UserMode } from '../types';
 import { KnouxEngine } from '../services/knoux_engine';
+import { buildFilter, DEFAULT_ADJUSTMENTS } from '../utils/imageFilters';
 
-interface Props { navigate: (s: AppScreen) => void; mode: UserMode; }
+interface Props {
+  navigate: (s: AppScreen) => void;
+  userMode: UserMode;
+}
 
-const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
+type AdjustmentKey = keyof AdjustmentState;
+
+const ADJUSTMENTS: Array<{ key: AdjustmentKey; label: string }> = [
+  { key: 'brightness', label: 'السطوع' },
+  { key: 'contrast', label: 'التباين' },
+  { key: 'exposure', label: 'التعريض' },
+  { key: 'saturation', label: 'التشبع' },
+  { key: 'temperature', label: 'الحرارة' },
+];
+
+const AdjustmentSlider: React.FC<{
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+}> = ({ label, value, onChange }) => (
+  <div className="space-y-3">
+    <div className="flex justify-between text-[11px] font-bold">
+      <span className="text-[#8E8E93]">{label}</span>
+      <span className="text-[#9B59FF]">{value}</span>
+    </div>
+    <input
+      type="range"
+      min="-100"
+      max="100"
+      value={value}
+      onChange={(event) => onChange(parseInt(event.target.value, 10))}
+      className="w-full h-1 bg-white/10 rounded-full appearance-none accent-[#9B59FF] cursor-pointer"
+    />
+  </div>
+);
+
+const MetadataBadge: React.FC<{ asset: MediaAsset }> = ({ asset }) => (
+  <div className="absolute bottom-6 right-8 glass px-4 py-2 rounded-2xl text-[10px] text-[#8E8E93] flex gap-4">
+    <span>{asset.metadata.size}</span>
+    <span>{asset.metadata.dimensions}</span>
+    <span>{asset.metadata.type}</span>
+  </div>
+);
+
+const PhotoEditor: React.FC<Props> = ({ navigate, userMode }) => {
   const engine = KnouxEngine.getInstance();
   const fileRef = useRef<HTMLInputElement>(null);
   
   const [asset, setAsset] = useState<MediaAsset | null>(null);
-  const [layers, setLayers] = useState<Layer[]>([
-    { id: '1', name: 'الخلفية الأصلية', visible: true, locked: true, opacity: 100 }
-  ]);
-  const [adjs, setAdjs] = useState<AdjustmentState>({
-    brightness: 0, contrast: 0, exposure: 0, saturation: 0, temperature: 0, tint: 0, sharpness: 0
-  });
+  const [adjs, setAdjs] = useState<AdjustmentState>({ ...DEFAULT_ADJUSTMENTS });
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -23,8 +61,8 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
     }
   };
 
-  const updateAdj = (key: keyof AdjustmentState, val: number) => {
-    setAdjs(prev => ({ ...prev, [key]: val }));
+  const updateAdj = (key: AdjustmentKey, val: number) => {
+    setAdjs((prev) => ({ ...prev, [key]: val }));
   };
 
   return (
@@ -45,7 +83,9 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
         <header className="h-14 glass border-b border-white/5 flex items-center justify-between px-8">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate(AppScreen.HOME)} className="text-xs font-bold text-[#8E8E93] hover:text-white">✕ خروج</button>
-            <span className="text-[10px] bg-[#9B59FF]/20 text-[#9B59FF] px-2 py-0.5 rounded-full font-black">G2 OPTICS ACTIVE</span>
+            <span className="text-[10px] bg-[#9B59FF]/20 text-[#9B59FF] px-2 py-0.5 rounded-full font-black">
+              G2 OPTICS ACTIVE — {userMode}
+            </span>
           </div>
           <button className="px-6 py-1.5 bg-[#9B59FF] rounded-lg text-xs font-bold shadow-lg shadow-[#9B59FF]/20">تصدير سيادي</button>
         </header>
@@ -53,11 +93,11 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
         <div className="flex-1 bg-black/40 relative flex items-center justify-center p-10">
           {asset ? (
             <div className="relative shadow-2xl">
-              <img 
-                src={asset.thumbnail} 
+              <img
+                src={asset.thumbnail}
                 className="max-w-full max-h-full object-contain"
-                style={{ 
-                  filter: `brightness(\%) contrast(\%) saturate(\%)` 
+                style={{
+                  filter: buildFilter(adjs),
                 }}
               />
               <div className="absolute inset-0 border border-white/10 pointer-events-none"></div>
@@ -65,15 +105,12 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
           ) : (
             <div onClick={() => fileRef.current?.click()} className="text-center cursor-pointer group">
                <div className="w-32 h-32 bg-white/5 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 group-hover:scale-110 transition-all border border-dashed border-white/20">🖼️</div>
-               <h2 className="text-2xl font-black opacity-20">بانتظار الإبداع... استورد من القرص F:</h2>
+               <h2 className="text-2xl font-black opacity-20">بانتظار الإبداع... استورد من القرص:</h2>
             </div>
           )}
           
           {asset && (
-            <div className="absolute bottom-6 right-8 glass px-4 py-2 rounded-2xl text-[10px] text-[#8E8E93] flex gap-4">
-               <span>\</span>
-               <span>\</span>
-            </div>
+            <MetadataBadge asset={asset} />
           )}
         </div>
       </main>
@@ -83,19 +120,13 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
         <div className="p-6 space-y-8 overflow-y-auto custom-scrollbar flex-1">
           <section className="space-y-6">
             <h3 className="text-[10px] font-black text-[#9B59FF] uppercase tracking-[0.2em]">المعالجة البصرية</h3>
-            {['brightness', 'contrast', 'exposure', 'saturation', 'temperature'].map((adj) => (
-              <div key={adj} className="space-y-3">
-                <div className="flex justify-between text-[11px] font-bold">
-                  <span className="text-[#8E8E93] capitalize">{adj}</span>
-                  <span className="text-[#9B59FF]">{(adjs as any)[adj]}</span>
-                </div>
-                <input 
-                  type="range" min="-100" max="100" 
-                  value={(adjs as any)[adj]} 
-                  onChange={(e) => updateAdj(adj as any, parseInt(e.target.value))}
-                  className="w-full h-1 bg-white/10 rounded-full appearance-none accent-[#9B59FF] cursor-pointer"
-                />
-              </div>
+            {ADJUSTMENTS.map((adj) => (
+              <AdjustmentSlider
+                key={adj.key}
+                label={adj.label}
+                value={adjs[adj.key]}
+                onChange={(value) => updateAdj(adj.key, value)}
+              />
             ))}
           </section>
 

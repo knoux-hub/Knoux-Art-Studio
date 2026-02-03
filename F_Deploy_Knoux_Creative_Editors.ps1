@@ -4,7 +4,11 @@
 # Target: Drive F:\KnouxArtStudio
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+
+try {
 
 function New-SovereignFile($Path, $Content) {
     $FullPath = Join-Path $Root $Path
@@ -66,3 +70,8 @@ void MakeupStudio::applyLipstick(const QColor &color, int intensity) {
 '@
 
 Write-Host "`n✅ Creative Editors Suite Populated." -ForegroundColor Green
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

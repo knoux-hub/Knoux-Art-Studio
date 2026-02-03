@@ -1,7 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { AppScreen, UserMode, AIModel, PromptHistoryEntry } from '../types';
-import { GoogleGenAI } from "@google/genai";
+import { AdjustmentState, AppScreen, UserMode, AIModel, PromptHistoryEntry } from '../types';
+// TODO: restore @google/genai when registry access is available.
+import { GoogleGenAI } from '../src/mocks/genai-mock';
+import { buildFilter, DEFAULT_ADJUSTMENTS } from '../src/utils/imageFilters';
 
 // Define the missing interface for component props
 interface ElysianCanvasProps {
@@ -16,6 +18,9 @@ const MODELS: AIModel[] = [
   { id: 'imagen-4.0-generate-001', name: 'Imagen 4 Pro', nameAr: 'إيماجن 4 برو', description: 'دقة استثنائية وفهم عميق للغة الطبيعية', type: 'IMAGE', local: false, premium: true, cost: '$0.04' },
   { id: 'flux-schnell', name: 'Flux.1 Local', nameAr: 'فليكس 1 محلي', description: 'يعمل بالكامل على جهازك (يتطلب 12GB VRAM)', type: 'IMAGE', local: true, premium: false }
 ];
+
+export const getElysianCanvasFilter = (adjustments: AdjustmentState = DEFAULT_ADJUSTMENTS): string =>
+  buildFilter(adjustments);
 
 const ElysianCanvas: React.FC<ElysianCanvasProps> = ({ navigate, userMode }) => {
   const [prompt, setPrompt] = useState('');
@@ -149,7 +154,12 @@ const ElysianCanvas: React.FC<ElysianCanvasProps> = ({ navigate, userMode }) => 
              <div className="relative group w-full h-full flex items-center justify-center">
                <div className={`aspect-square max-w-[600px] max-h-[600px] w-full bg-[#0F0F14] border-2 ${isGenerating ? 'border-[#9B59FF] shadow-[0_0_50px_#9B59FF33]' : 'border-white/5'} rounded-[3rem] flex items-center justify-center overflow-hidden transition-all duration-1000 shadow-2xl relative`}>
                   {generatedResult ? (
-                    <img src={generatedResult} alt="AI Result" className="w-full h-full object-contain animate-in fade-in zoom-in duration-1000" />
+                    <img
+                      src={generatedResult}
+                      alt="AI Result"
+                      className="w-full h-full object-contain animate-in fade-in zoom-in duration-1000"
+                      style={{ filter: getElysianCanvasFilter() }}
+                    />
                   ) : (
                     <div className="text-center space-y-6 opacity-5 flex flex-col items-center select-none">
                        <span className="text-[10rem]">🔮</span>

@@ -2,7 +2,11 @@
 # KNOUX ART STUDIO - VIDEO EDITOR LOGIC DEPLOYMENT
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+
+try {
 
 function New-SovereignFile($RelativePath, $Content) {
     $FullPath = Join-Path $Root $RelativePath
@@ -101,3 +105,8 @@ $VideoEditorCpp = Get-Content -Path "text/plain" # نفترض أن الكود ه
 New-SovereignFile "src/video_editor/VideoEditor.cpp" $VideoEditorCpp
 
 Write-Host "`n✅ Video Logic Fully Integrated." -ForegroundColor Green
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

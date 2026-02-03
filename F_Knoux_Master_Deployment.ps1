@@ -5,8 +5,10 @@
 # Target: Drive F:\
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
-$ErrorActionPreference = "Stop"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+try {
 
 function Write-Knoux($msg, $color="Cyan") {
     Write-Host "[KNOUX] $msg" -ForegroundColor $color
@@ -197,3 +199,8 @@ pause
 
 Write-Knoux "MASTER SCRIPT FINISHED." "Magenta"
 Write-Knoux "Safety is not a luxury, it's a life." "Cyan"
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

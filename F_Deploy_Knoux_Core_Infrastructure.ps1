@@ -4,13 +4,16 @@
 # Target: Drive F:\KnouxArtStudio
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
-$ErrorActionPreference = "Stop"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
 
-if (-not (Test-Path "F:\")) { 
-    Write-Host "❌ ERROR: DRIVE F: NOT FOUND." -ForegroundColor Red
-    return 
+if (-not (Test-Path $Root)) {
+    Write-KnouxLog "Target path not found: $Root" "ERROR"
+    return
 }
+
+try {
 
 # 1. Create Sovereign Directory Tree
 $Dirs = @(
@@ -82,3 +85,8 @@ public:
 '@
 
 Write-Host "`n✅ Infrastructure deployed. Run next script for Editors." -ForegroundColor Green
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

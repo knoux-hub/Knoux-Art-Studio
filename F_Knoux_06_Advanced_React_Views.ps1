@@ -2,7 +2,11 @@
 # KNOUX ART STUDIO - REACT VIEWS DEPLOYMENT
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+
+try {
 
 function New-SovereignFile($RelativePath, $Content) {
     $FullPath = Join-Path $Root $RelativePath
@@ -105,4 +109,9 @@ const FaceRetouch: React.FC<{navigate: any, userMode: any}> = ({ navigate, userM
 export default FaceRetouch;
 '@
 
-Write-Host "`n✅ All React Creative Views Populated on F:." -ForegroundColor Green
+Write-Host "`n✅ All React Creative Views Populated on $Root." -ForegroundColor Green
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

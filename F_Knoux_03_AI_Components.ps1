@@ -4,7 +4,11 @@
 # Target: Drive F:\
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+
+try {
 
 function New-SovereignFile($RelativePath, $Content) {
     $FullPath = Join-Path $Root $RelativePath
@@ -61,4 +65,9 @@ New-SovereignFile "README.md" @'
 2. فتح البرنامج من مجلد build/Release
 '@
 
-Write-Host "`n🚀 DEPLOYMENT COMPLETED. Your drive F: is now a Supreme Creative Lab." -ForegroundColor Green
+Write-Host "`n🚀 DEPLOYMENT COMPLETED. Your drive is now a Supreme Creative Lab." -ForegroundColor Green
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

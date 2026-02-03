@@ -5,8 +5,10 @@
 # Purpose: Full Application Deployment A-to-Z
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
-$ErrorActionPreference = "Stop"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting $($MyInvocation.MyCommand.Name)." "INFO"
+try {
 
 function Write-Knoux($msg, $color="Cyan") {
     Write-Host "[KNOUX FACTORY] $msg" -ForegroundColor $color
@@ -177,6 +179,11 @@ git remote add origin https://github.com/knoux-hub/Knoux-Art-Studio.git
 git add .
 git commit -m "Initial Deployment: Knoux Art Studio Sovereign A-to-Z"
 
-Write-Knoux "DEPLOIMENT COMPLETE ON DRIVE F:\" "Magenta"
+Write-Knoux "DEPLOYMENT COMPLETE ON $Root" "Magenta"
 Write-Knoux "You can now run: git push -u origin master" "Yellow"
 Write-Knoux "Safety is not a luxury, it's a life." "Cyan"
+Write-KnouxLog "Completed $($MyInvocation.MyCommand.Name)." "SUCCESS"
+} catch {
+    Write-KnouxLog "Failed $($MyInvocation.MyCommand.Name): $($_.Exception.Message)" "ERROR"
+    throw
+}

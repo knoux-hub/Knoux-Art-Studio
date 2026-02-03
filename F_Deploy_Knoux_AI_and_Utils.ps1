@@ -4,7 +4,11 @@
 # Target: Drive F:\KnouxArtStudio
 # ==============================================================================
 
-$Root = "F:\KnouxArtStudio"
+. "$PSScriptRoot/knoux_helpers.ps1"
+$Root = Get-KnouxRoot
+Write-KnouxLog "Starting AI & Utilities deployment." "INFO"
+
+try {
 
 function New-SovereignFile($Path, $Content) {
     $FullPath = Join-Path $Root $Path
@@ -43,5 +47,10 @@ bool ExportManager::exportSovereign(const QImage &img, const QString &path) {
 '@
 
 Write-Host "`n✅ AI and Utility Layers Initialized." -ForegroundColor Green
-Write-Host "🚀 DEPLOYMENT COMPLETED A-TO-Z ON F:\KnouxArtStudio" -ForegroundColor Cyan
+Write-Host "🚀 DEPLOYMENT COMPLETED A-TO-Z ON $Root" -ForegroundColor Cyan
 Write-Host "Safety is not a luxury, it's a life." -ForegroundColor Magenta
+Write-KnouxLog "AI & Utilities deployment completed." "SUCCESS"
+} catch {
+    Write-KnouxLog "AI & Utilities deployment failed: $($_.Exception.Message)" "ERROR"
+    throw
+}
