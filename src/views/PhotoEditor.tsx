@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react';
 import { AppScreen, UserMode, AdjustmentState, Layer, MediaAsset } from '../types';
 import { KnouxEngine } from '../services/knoux_engine';
 
-interface Props { navigate: (s: AppScreen) => void; mode: UserMode; }
+interface Props { navigate: (s: AppScreen) => void; userMode: UserMode; }
 
-const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
+const PhotoEditor: React.FC<Props> = ({ navigate }) => {
   const engine = KnouxEngine.getInstance();
   const fileRef = useRef<HTMLInputElement>(null);
   
@@ -56,8 +56,8 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
               <img 
                 src={asset.thumbnail} 
                 className="max-w-full max-h-full object-contain"
-                style={{ 
-                  filter: `brightness(\%) contrast(\%) saturate(\%)` 
+                style={{
+                  filter: `brightness(${100 + adjs.brightness}%) contrast(${100 + adjs.contrast}%) saturate(${100 + adjs.saturation}%)`,
                 }}
               />
               <div className="absolute inset-0 border border-white/10 pointer-events-none"></div>
@@ -71,8 +71,8 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
           
           {asset && (
             <div className="absolute bottom-6 right-8 glass px-4 py-2 rounded-2xl text-[10px] text-[#8E8E93] flex gap-4">
-               <span>\</span>
-               <span>\</span>
+              <span>{asset.metadata.size}</span>
+              <span>{asset.metadata.dimensions}</span>
             </div>
           )}
         </div>
