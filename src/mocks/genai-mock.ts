@@ -22,5 +22,33 @@ export class GoogleGenAI {
       console.warn("GoogleGenAI mock: generateContent called without real SDK.");
       return { candidates: [] };
     },
+    listModels: async (): Promise<unknown[]> => {
+      console.warn("GoogleGenAI mock: listModels called without real SDK.");
+      return [];
+    },
+    callModel: async (_model: string, _input: unknown): Promise<Record<string, never>> => {
+      console.warn("GoogleGenAI mock: callModel called without real SDK.");
+      return {};
+    },
   };
+
+  async generateText(_prompt: string): Promise<string> {
+    console.warn("GoogleGenAI mock: generateText called without real SDK.");
+    return "";
+  }
+
+  async generateImage(_prompt: string): Promise<string> {
+    console.warn("GoogleGenAI mock: generateImage called without real SDK.");
+    return "";
+  }
+
+  async enhanceBodyPart(_part: string, _settings: Record<string, unknown>): Promise<Record<string, never>> {
+    console.warn("GoogleGenAI mock: enhanceBodyPart called without real SDK.");
+    return {};
+  }
+
+  async applyMakeup(_type: string, _intensity: number): Promise<Record<string, never>> {
+    console.warn("GoogleGenAI mock: applyMakeup called without real SDK.");
+    return {};
+  }
 }

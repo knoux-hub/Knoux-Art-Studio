@@ -48,6 +48,8 @@ Once registry access is available, restore the dependency and replace the mock i
 ./scripts/restore-genai.sh
 ```
 
+The mock returns safe placeholders for calls like `generateText`, `generateImage`, `enhanceBodyPart`, and `applyMakeup` to keep offline development deterministic.
+
 ## Cross-platform Deployment Scripts
 
 PowerShell deployment scripts now share helpers for root detection and logging:
