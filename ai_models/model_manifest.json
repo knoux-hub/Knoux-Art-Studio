@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "models": [
+    {
+      "id": "knoux_portrait_v2",
+      "type": "ONNX",
+      "path": "ai_models/enhancement/portrait.onnx",
+      "local": true
+    },
+    {
+      "id": "knoux_segment_v4",
+      "type": "TFLITE",
+      "path": "ai_models/segmentation/bg_removal.tflite",
+      "local": true
+    }
+  ]
+}

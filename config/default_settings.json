@@ -1,0 +1,7 @@
+{
+  "drive_mount": "F:",
+  "vault_path": "F:\\KnouxArtStudio\\projects\\vault",
+  "ai_inference": "local_gpu",
+  "encryption_standard": "AES-256-GCM",
+  "ui_theme": "cyberpunk_neon"
+}
