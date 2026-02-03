@@ -10,8 +10,8 @@ import BodyEditor from './views/BodyEditor';
 import FaceRetouch from './views/FaceRetouch';
 import MakeupStudio from './views/MakeupStudio';
 import Settings from './views/Settings';
-import StudioDashboard from './src/views/StudioDashboard';
-import TemplateGallery from './src/views/TemplateGallery';
+import StudioDashboard from './views/StudioDashboard';
+import TemplateGallery from './views/TemplateGallery';
 import Sidebar from './components/Sidebar';
 import { KnouxEngine } from './services/knoux_engine';
 
