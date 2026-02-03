@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PhotoEditor from './PhotoEditor';
-import ElysianCanvas from './ElysianCanvas';
 import VideoStudio from './VideoStudio';
 import MakeupStudio from './MakeupStudio';
 import BodyEditor from './BodyEditor';

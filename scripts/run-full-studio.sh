@@ -16,7 +16,13 @@ npm run electron &
 
 echo "4️⃣  Opening Dashboard..."
 sleep 3
-echo "Dashboard: http://localhost:3000/studio-dashboard"
+dashboard_url="http://localhost:3000/studio-dashboard"
+if command -v xdg-open >/dev/null 2>&1; then
+  xdg-open "$dashboard_url" >/dev/null 2>&1 || true
+elif command -v open >/dev/null 2>&1; then
+  open "$dashboard_url" >/dev/null 2>&1 || true
+fi
+echo "Dashboard: $dashboard_url"
 
 echo "5️⃣  Monitoring Services..."
 echo ""
