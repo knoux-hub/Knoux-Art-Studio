@@ -4,7 +4,7 @@ import { KnouxEngine } from '../services/knoux_engine';
 
 interface Props { navigate: (s: AppScreen) => void; userMode: UserMode; }
 
-const BodyEditor: React.FC<Props> = ({ navigate }) => {
+const BodyEditor: React.FC<Props> = ({ navigate, userMode }) => {
   const engine = KnouxEngine.getInstance();
   const fileRef = useRef<HTMLInputElement>(null);
   
@@ -57,7 +57,8 @@ const BodyEditor: React.FC<Props> = ({ navigate }) => {
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      const newAsset = await engine.importMedia(e.target.files[0]);
+      // Fix: Changed engine.importMedia to engine.importLocalImage to match KnouxEngine implementation
+      const newAsset = await engine.importLocalImage(e.target.files[0]);
       setAsset(newAsset);
       // Simulate detection of body parts on import
       setDetectedParts([
@@ -90,6 +91,15 @@ const BodyEditor: React.FC<Props> = ({ navigate }) => {
     ));
   };
 
+  const handleDragEnd = () => {
+    if (draggingPart) {
+      setDraggingPart(null);
+      // In a real implementation, dragging would modify params. 
+      // For this UI prototype, we just finalize the drag in history.
+      addToHistory(params);
+    }
+  };
+
   const tools = [
     { id: 'measure', icon: '📏', label: 'المقاييس' },
     { id: 'sculpt', icon: '👤', label: 'النحت الحر' },
@@ -107,7 +117,7 @@ const BodyEditor: React.FC<Props> = ({ navigate }) => {
           onClick={() => setIsToolbarExpanded(!isToolbarExpanded)}
           className="mb-4 text-xs opacity-50 hover:opacity-100 transition-all uppercase tracking-widest"
         >
-          {isToolbarExpanded ? 'Collapse' : '☰'}
+          {isToolbarExpanded ? 'إخفاء' : '☰'}
         </button>
 
         <button onClick={() => fileRef.current?.click()} className="flex items-center gap-4 w-full h-10 hover:text-[#9B59FF] transition-all group">
@@ -130,7 +140,7 @@ const BodyEditor: React.FC<Props> = ({ navigate }) => {
       <main className="flex-1 flex flex-col min-w-0">
         <header className="h-16 flex items-center justify-between px-10 border-b border-white/5 bg-black/20">
           <div className="flex items-center gap-8">
-            <h2 className="text-[10px] font-black tracking-[0.4em] text-[#9B59FF] uppercase">Neural Body Sculptor G2</h2>
+            <h2 className="text-[10px] font-black tracking-[0.4em] text-[#9B59FF] uppercase">Neural Body Sculptor G2 — {userMode}</h2>
             <div className="flex items-center gap-2">
               <button 
                 onClick={undo} 
@@ -155,8 +165,8 @@ const BodyEditor: React.FC<Props> = ({ navigate }) => {
         <div 
           ref={canvasRef}
           onMouseMove={handleMouseMove}
-          onMouseUp={() => setDraggingPart(null)}
-          className="flex-1 bg-[#0F0A1A] flex items-center justify-center p-16 relative transition-all duration-500 hover:shadow-[inset_0_0_100px_rgba(155,89,255,0.15)] group"
+          onMouseUp={handleDragEnd}
+          className="flex-1 bg-[#0F0A1A] flex items-center justify-center p-16 relative transition-all duration-500 hover:shadow-[inset_0_0_100px_rgba(155,89,255,0.1)] group"
         >
           {asset ? (
             <div className="relative inline-block select-none shadow-[0_0_40px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_50px_rgba(155,89,255,0.2)] transition-shadow duration-700">
@@ -171,23 +181,23 @@ const BodyEditor: React.FC<Props> = ({ navigate }) => {
               {detectedParts.map(part => (
                 <div
                   key={part.id}
-                  onMouseDown={() => setDraggingPart(part.id)}
+                  onMouseDown={(e) => { e.stopPropagation(); setDraggingPart(part.id); }}
                   style={{ 
                     left: `${part.x}%`, 
                     top: `${part.y}%`, 
                     width: `${part.width}%`, 
                     height: `${part.height}%` 
                   }}
-                  className={`absolute border border-dashed border-[#9B59FF]/40 cursor-move hover:bg-[#9B59FF]/10 flex items-center justify-center transition-colors ${draggingPart === part.id ? 'bg-[#9B59FF]/20 border-[#9B59FF]' : ''}`}
+                  className={`absolute border border-dashed border-[#9B59FF]/40 cursor-move hover:bg-[#9B59FF]/10 flex items-center justify-center transition-colors z-30 ${draggingPart === part.id ? 'bg-[#9B59FF]/20 border-[#9B59FF]' : ''}`}
                 >
-                  <span className="text-[8px] font-black text-[#9B59FF] uppercase opacity-40">{part.name}</span>
+                  <span className="text-[8px] font-black text-[#9B59FF] uppercase opacity-40 select-none">{part.name}</span>
                 </div>
               ))}
             </div>
           ) : (
             <div className="text-center animate-pulse">
               <div className="text-6xl mb-4 opacity-10">🧬</div>
-              <div className="text-xl font-black opacity-10 uppercase tracking-tighter">Waiting for body data from F:</div>
+              <div className="text-xl font-black opacity-10 uppercase tracking-tighter">بانتظار البيانات من القرص F:</div>
             </div>
           )}
         </div>

@@ -12,7 +12,8 @@ const MakeupStudio: React.FC<Props> = ({ navigate }) => {
   const [activeColor, setActiveColor] = useState('#C0392B');
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) setAsset(await engine.importMedia(e.target.files[0]));
+    // Fix: Changed engine.importMedia to engine.importLocalImage to match KnouxEngine implementation
+    if (e.target.files?.[0]) setAsset(await engine.importLocalImage(e.target.files[0]));
   };
 
   const makeupColors = [

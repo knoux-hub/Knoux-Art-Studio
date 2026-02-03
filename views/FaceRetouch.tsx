@@ -4,7 +4,7 @@ import { KnouxEngine } from '../services/knoux_engine';
 
 interface Props { navigate: (s: AppScreen) => void; userMode: UserMode; }
 
-const FaceRetouch: React.FC<Props> = ({ navigate }) => {
+const FaceRetouch: React.FC<Props> = ({ navigate, userMode }) => {
   const engine = KnouxEngine.getInstance();
   const fileRef = useRef<HTMLInputElement>(null);
   const [asset, setAsset] = useState<MediaAsset | null>(null);
@@ -14,7 +14,8 @@ const FaceRetouch: React.FC<Props> = ({ navigate }) => {
   });
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) setAsset(await engine.importMedia(e.target.files[0]));
+    // Fix: Changed engine.importMedia to engine.importLocalImage to match KnouxEngine implementation
+    if (e.target.files?.[0]) setAsset(await engine.importLocalImage(e.target.files[0]));
   };
 
   return (
@@ -29,7 +30,7 @@ const FaceRetouch: React.FC<Props> = ({ navigate }) => {
 
       <main className="flex-1 flex flex-col min-w-0">
         <header className="h-16 flex items-center justify-between px-10 border-b border-white/5">
-          <h2 className="text-sm font-black tracking-widest text-[#9B59FF]">FACIAL RETOUCH CORE G2</h2>
+          <h2 className="text-sm font-black tracking-widest text-[#9B59FF]">FACIAL RETOUCH CORE G2 — {userMode}</h2>
           <button onClick={() => navigate(AppScreen.HOME)} className="text-[10px] opacity-40">✕</button>
         </header>
         <div className="flex-1 bg-black/40 flex items-center justify-center p-12">
