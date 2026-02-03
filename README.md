@@ -56,3 +56,13 @@ PowerShell deployment scripts now share helpers for root detection and logging:
 
 - Helper: `knoux_helpers.ps1`
 - Override root: set `KNOUX_ROOT` in the environment
+
+## Full Studio Launcher
+
+Run the full mocked studio stack (backend, frontend, Electron) with:
+
+```bash
+./scripts/run-full-studio.sh
+```
+
+Open the dashboard at `http://localhost:3000/studio-dashboard`.

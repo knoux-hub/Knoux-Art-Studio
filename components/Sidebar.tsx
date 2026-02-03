@@ -19,6 +19,8 @@ const Sidebar: React.FC<SidebarProps> = ({ activeScreen, onNavigate, isOpen, tog
     { id: AppScreen.BODY_EDITOR, labelAr: 'الجسم', labelEn: 'Body', icon: '👤' },
     { id: AppScreen.FACE_RETOUCH, labelAr: 'الوجه', labelEn: 'Face', icon: '😊' },
     { id: AppScreen.MAKEUP_STUDIO, labelAr: 'مكياج', labelEn: 'Makeup', icon: '💄' },
+    { id: AppScreen.STUDIO_DASHBOARD, labelAr: 'الاستوديو', labelEn: 'Studio', icon: '🎛️' },
+    { id: AppScreen.TEMPLATES, labelAr: 'قوالب', labelEn: 'Templates', icon: '🗂️' },
     { id: AppScreen.ELYSIAN_CANVAS, labelAr: 'AI Canvas', labelEn: 'AI Canvas', icon: '✨' },
     { id: AppScreen.SETTINGS, labelAr: 'الإعدادات', labelEn: 'Settings', icon: '⚙' },
   ];

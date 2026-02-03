@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "backend": "node -e \"console.log('Backend placeholder running')\"",
     "build": "vite build",
+    "electron": "node -e \"console.log('Electron placeholder running')\"",
     "preview": "vite preview",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",

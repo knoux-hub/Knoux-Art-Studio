@@ -10,6 +10,8 @@ import BodyEditor from './views/BodyEditor';
 import FaceRetouch from './views/FaceRetouch';
 import MakeupStudio from './views/MakeupStudio';
 import Settings from './views/Settings';
+import StudioDashboard from './src/views/StudioDashboard';
+import TemplateGallery from './src/views/TemplateGallery';
 import Sidebar from './components/Sidebar';
 import { KnouxEngine } from './services/knoux_engine';
 
@@ -51,6 +53,8 @@ const App: React.FC = () => {
       // Fix: Added missing 'userMode' prop required by FaceRetouch component
       case AppScreen.FACE_RETOUCH: return <FaceRetouch navigate={setCurrentScreen} userMode={userMode} />;
       case AppScreen.MAKEUP_STUDIO: return <MakeupStudio navigate={setCurrentScreen} />;
+      case AppScreen.STUDIO_DASHBOARD: return <StudioDashboard />;
+      case AppScreen.TEMPLATES: return <TemplateGallery />;
       case AppScreen.SETTINGS: return <Settings navigate={setCurrentScreen} />;
       default: return <Home navigate={setCurrentScreen} userMode={userMode} />;
     }
