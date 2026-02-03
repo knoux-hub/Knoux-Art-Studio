@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react';
 import { AppScreen, UserMode, AdjustmentState, Layer, MediaAsset } from '../types';
 import { KnouxEngine } from '../services/knoux_engine';
 
-interface Props { navigate: (s: AppScreen) => void; mode: UserMode; }
+interface Props { navigate: (s: AppScreen) => void; userMode: UserMode; }
 
-const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
+const PhotoEditor: React.FC<Props> = ({ navigate, userMode }) => {
   const engine = KnouxEngine.getInstance();
   const fileRef = useRef<HTMLInputElement>(null);
   
@@ -45,7 +45,9 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
         <header className="h-14 glass border-b border-white/5 flex items-center justify-between px-8">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate(AppScreen.HOME)} className="text-xs font-bold text-[#8E8E93] hover:text-white">✕ خروج</button>
-            <span className="text-[10px] bg-[#9B59FF]/20 text-[#9B59FF] px-2 py-0.5 rounded-full font-black">G2 OPTICS ACTIVE</span>
+            <span className="text-[10px] bg-[#9B59FF]/20 text-[#9B59FF] px-2 py-0.5 rounded-full font-black">
+              G2 OPTICS ACTIVE — {userMode}
+            </span>
           </div>
           <button className="px-6 py-1.5 bg-[#9B59FF] rounded-lg text-xs font-bold shadow-lg shadow-[#9B59FF]/20">تصدير سيادي</button>
         </header>
@@ -56,8 +58,8 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
               <img 
                 src={asset.thumbnail} 
                 className="max-w-full max-h-full object-contain"
-                style={{ 
-                  filter: `brightness(\%) contrast(\%) saturate(\%)` 
+                style={{
+                  filter: `brightness(${100 + adjs.brightness}%) contrast(${100 + adjs.contrast}%) saturate(${100 + adjs.saturation}%)`,
                 }}
               />
               <div className="absolute inset-0 border border-white/10 pointer-events-none"></div>
@@ -71,8 +73,8 @@ const PhotoEditor: React.FC<Props> = ({ navigate, mode }) => {
           
           {asset && (
             <div className="absolute bottom-6 right-8 glass px-4 py-2 rounded-2xl text-[10px] text-[#8E8E93] flex gap-4">
-               <span>\</span>
-               <span>\</span>
+              <span>{asset.metadata.size}</span>
+              <span>{asset.metadata.dimensions}</span>
             </div>
           )}
         </div>

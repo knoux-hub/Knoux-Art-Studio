@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { AppScreen, UserMode, AIModel, PromptHistoryEntry } from '../types';
-import { GoogleGenAI } from "@google/genai";
+// TODO: restore @google/genai when registry access is available.
+import { GoogleGenAI } from "../src/mocks/genai-mock";
 
 // Define the missing interface for component props
 interface ElysianCanvasProps {

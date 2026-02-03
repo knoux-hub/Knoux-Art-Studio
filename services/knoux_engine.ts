@@ -1,8 +1,25 @@
 import { MediaAsset, UserMode } from "../types";
 
+const getPathSeparator = (): string => {
+  const isWindows = typeof navigator !== "undefined" && /Windows/i.test(navigator.userAgent);
+  return isWindows ? "\\" : "/";
+};
+
+const joinPath = (...parts: string[]): string => {
+  const separator = getPathSeparator();
+  const sanitized = parts.map((part) => part.replace(/[\\/]+$/g, ""));
+  return sanitized.join(separator);
+};
+
+export const buildMediaPath = (projectRoot: string, fileName: string): string =>
+  joinPath(projectRoot, "projects", "media", fileName);
+
 export class KnouxEngine {
   private static instance: KnouxEngine;
-  private projectRoot: string = "F:\\KnouxArtStudio";
+  private projectRoot: string =
+    typeof navigator !== "undefined" && /Windows/i.test(navigator.userAgent)
+      ? "F:\\KnouxArtStudio"
+      : "/mnt/knoux/KnouxArtStudio";
   private currentMode: UserMode = UserMode.BEGINNER;
   private useGPU: boolean = true;
 
@@ -43,7 +60,7 @@ export class KnouxEngine {
       reader.onload = (e) => {
         resolve({
           id: Math.random().toString(36).substr(2, 9),
-          path: `${this.projectRoot}\\projects\\media\\${file.name}`,
+          path: buildMediaPath(this.projectRoot, file.name),
           name: file.name,
           type: 'IMAGE',
           size: file.size,
@@ -67,6 +84,6 @@ export class KnouxEngine {
       // simulate chunk encryption
       return new Promise(r => setTimeout(r, 10));
     }, 10);
-    console.log("✅ Saved to F:\\KnouxArtStudio\\projects\\vault");
+    console.log(`✅ Saved to ${joinPath(this.projectRoot, "projects", "vault")}`);
   }
 }
