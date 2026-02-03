@@ -1,4 +1,4 @@
-import { MediaAsset, AdjustmentState } from "../types";
+import { MediaAsset } from "../types";
 
 export class KnouxEngine {
   private static instance: KnouxEngine;
@@ -18,8 +18,7 @@ export class KnouxEngine {
       reader.onload = (e) => {
         resolve({
           id: Math.random().toString(36).substr(2, 9),
-          // Fixed broken string syntax that was being parsed as invalid shorthand properties
-          path: "\\projects\\media\\",
+          path: `${this.projectRoot}\\projects\\media\\${file.name}`,
           name: file.name,
           thumbnail: e.target?.result as string,
           metadata: {

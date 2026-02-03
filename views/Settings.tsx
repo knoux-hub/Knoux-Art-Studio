@@ -63,7 +63,7 @@ const Settings: React.FC<SettingsProps> = ({ navigate }) => {
                <p>Knoux Art Studio هو مشروع متفرد يهدف إلى إعادة السيادة الرقمية للفنانين. نحن نؤمن بأن أدوات الإبداع لا ينبغي أن تكون أدوات للمراقبة.</p>
                <div className="grid grid-cols-2 gap-4 pt-4">
                   {PROJECTS_LIST.map(p => (
-                    <a key={p.name} href={p.url} target="_blank" className="p-3 glass rounded-lg hover:border-[#9B59FF]/40 transition-all">
+                    <a key={p.name} href={p.url} target="_blank" rel="noreferrer" className="p-3 glass rounded-lg hover:border-[#9B59FF]/40 transition-all">
                        <h5 className="font-bold text-[#9B59FF]">{p.name}</h5>
                        <p className="text-[10px] text-[#A7A7A7]">{p.desc}</p>
                     </a>
@@ -79,9 +79,9 @@ const Settings: React.FC<SettingsProps> = ({ navigate }) => {
               <h3 className="text-xl font-bold">Knoux Art Studio</h3>
               <p className="text-xs text-[#A7A7A7]">الإصدار 1.0.0 (نواة سيادية)</p>
               <div className="flex justify-center gap-4 text-xl">
-                 <a href={OFFICIAL_LINKS.TWITTER} target="_blank">𝕏</a>
-                 <a href={OFFICIAL_LINKS.GITHUB} target="_blank">🐙</a>
-                 <a href={OFFICIAL_LINKS.WHATSAPP} target="_blank">💬</a>
+                 <a href={OFFICIAL_LINKS.TWITTER} target="_blank" rel="noreferrer">𝕏</a>
+                 <a href={OFFICIAL_LINKS.GITHUB} target="_blank" rel="noreferrer">🐙</a>
+                 <a href={OFFICIAL_LINKS.WHATSAPP} target="_blank" rel="noreferrer">💬</a>
               </div>
            </div>
 
