@@ -110,4 +110,8 @@ const PhotoEditor: React.FC<Props> = ({ navigate }) => {
   );
 };
 
+<<<<<<< HEAD
 export default PhotoEditor;
+=======
+export default PhotoEditor;
+>>>>>>> a71b9f8 (Initial Deployment: Knoux Art Studio Sovereign A-to-Z)
