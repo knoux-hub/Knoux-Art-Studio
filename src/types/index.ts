@@ -30,4 +30,8 @@ export interface MediaAsset {
     dimensions: string;
     type: string;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> a71b9f8 (Initial Deployment: Knoux Art Studio Sovereign A-to-Z)
